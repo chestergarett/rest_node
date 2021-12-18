@@ -18,7 +18,11 @@
   },
   "homepage": "https://github.com/chestergarett/rest_node#readme",
   "dependencies": {
+    "config": "^3.3.6",
+    "debug": "^4.3.3",
     "express": "^4.17.2",
-    "joi": "^13.1.0"
+    "helmet": "^4.6.0",
+    "joi": "^13.1.0",
+    "morgan": "^1.10.0"
   }
 }

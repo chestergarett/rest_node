@@ -1,9 +1,33 @@
+const debug = require('debug')('app:startup');
+const config = require('config');
+const morgan = require('morgan');
+const helmet = require('helmet');
 const Joi = require('joi');
+const logger = require('./logger');
 const express = require('express');
 const app = express();
 
+// configuration
+console.log(`Application Name: ${config.get('name')}`);
+console.log(`Mail Server: ${config.get('mail.host')}`);
+// console.log(`Mail Password: ${config.get('mail.password')}`);
+
+//setting environment
+if(app.get('env') === 'development'){
+    app.use(morgan('tiny'));
+    debug('Morgan enabled');
+}
+
 //use middleware
 app.use(express.json());
+
+app.use(logger);
+//to use query params for REST API
+app.use(express.urlencoded({extended: true }));
+//to use static files for REST API
+app.use(express.static('./public'));
+app.use(helmet());
+
 
 const courses = [
     { id: 1, name: 'course1' },
@@ -89,6 +113,5 @@ const validateCourse = (course) => {
     const schema = {
         name: Joi.string().min(3).required()
     };
-
     return Joi.validate(course, schema);
 }
